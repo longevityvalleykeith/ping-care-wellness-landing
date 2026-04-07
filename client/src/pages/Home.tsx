@@ -9,14 +9,15 @@ const PC_ASSETS = {
   heroImage: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/hero-physio.png",
   aiAssistant: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/ai-assistant-247.png",
   medicalEscort: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/medical-escort.png",
+  emmettTechnique: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/emmett-technique.png",
   logo: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/logo.jpg",
   telegramQR: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/telegram-qr.jpg",
 };
 
 // Contact links
-const WHATSAPP_LINK = "https://wa.me/60126595319?text=Hi%20Sook%20Ping,%20I%20am%20interested%20in%20Ping%20Care%20Wellness%20services.";
+const WHATSAPP_LINK = "https://wa.me/60182905768?text=Hi%20Sook%20Ping,%20I%20am%20interested%20in%20Ping%20Care%20Wellness%20services.";
 const TELEGRAM_LINK = "https://t.me/Ping_Care_Bot";
-const PHONE_NUMBER = "+6012-659 5319";
+const PHONE_NUMBER = "+6018-290 5768";
 
 // Social media stubs (future extension)
 const INSTAGRAM_LINK = "#"; // TODO: Add @pingcarewellness Instagram
@@ -66,7 +67,7 @@ export default function Home() {
             asChild
           >
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-              Book Session
+              Schedule a Visit
             </a>
           </Button>
         </div>
@@ -112,7 +113,7 @@ export default function Home() {
                 asChild
               >
                 <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                  Book a Home Visit <ArrowRight className="ml-2 w-4 h-4" />
+                  Schedule a Booking <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
               </Button>
               <Button
@@ -158,8 +159,8 @@ export default function Home() {
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 aspect-[4/5] md:aspect-square">
                 <img
-                  src={PC_ASSETS.medicalEscort}
-                  alt="Ping Care Wellness — Medical Escort & Note Taking"
+                  src={PC_ASSETS.emmettTechnique}
+                  alt="Emmett Technique — Muscle Release Therapy"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
@@ -321,7 +322,7 @@ export default function Home() {
                 </ul>
                 <Button className="w-full rounded-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold" asChild>
                   <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                    Book Home Visit <ArrowRight className="ml-2 w-4 h-4" />
+                    Schedule a Booking <ArrowRight className="ml-2 w-4 h-4" />
                   </a>
                 </Button>
               </CardContent>
@@ -431,7 +432,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white">
                   <div className="text-sm font-medium uppercase tracking-wider mb-1">Licensed Mobile Physiotherapy</div>
-                  <div className="text-lg font-bold">Klang Valley &middot; Home-Based Care &middot; PDPA Compliant</div>
+                  <div className="text-lg font-bold">KL &middot; Selangor &middot; Home-Based Care &middot; PDPA Compliant</div>
                 </div>
               </div>
             </motion.div>
@@ -660,8 +661,8 @@ export default function Home() {
                   </div>
                   <h4 className="font-bold text-primary text-xl mb-2">We Come to You</h4>
                   <p className="text-muted-foreground mb-4">
-                    Serving the entire Klang Valley<br />
-                    Kuala Lumpur &middot; Selangor &middot; Malacca<br />
+                    Serving the Klang Valley<br />
+                    Kuala Lumpur &middot; Selangor<br />
                     Home &middot; Care Facilities &middot; Hospitals
                   </p>
                   <a
@@ -670,7 +671,7 @@ export default function Home() {
                     rel="noopener noreferrer"
                     className="text-accent hover:underline text-sm"
                   >
-                    View Service Area on Map
+                    View Service Area
                   </a>
                 </div>
               </div>
