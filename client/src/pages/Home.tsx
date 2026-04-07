@@ -6,8 +6,9 @@ import { useRef } from "react";
 
 // Ping Care Wellness Supabase asset URLs
 const PC_ASSETS = {
-  heroImage: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/experience-1.jpg",
-  experience2: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/experience-2.png",
+  heroImage: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/hero-physio.png",
+  aiAssistant: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/ai-assistant-247.png",
+  medicalEscort: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/medical-escort.png",
   logo: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/logo.jpg",
   telegramQR: "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/telegram-qr.jpg",
 };
@@ -77,13 +78,13 @@ export default function Home() {
           style={{ opacity, scale }}
           className="absolute inset-0 z-0"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30 z-10" />
           <img
             src={PC_ASSETS.heroImage}
-            alt="Ping Care Wellness — Professional Mobile Physiotherapy"
-            className="w-full h-full object-cover"
+            alt="Ping Care Wellness — Professional Integrative Physiotherapy"
+            className="w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-primary/60 z-5" />
+          <div className="absolute inset-0 bg-primary/40 z-5" />
         </motion.div>
 
         <div className="container relative z-20 px-6 grid md:grid-cols-2 gap-12 items-center">
@@ -93,15 +94,15 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-2xl"
           >
-            <div className="inline-flex items-center space-x-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium mb-6 border border-accent/30">
+            <div className="inline-flex items-center space-x-2 bg-white/15 backdrop-blur-sm px-4 py-2 rounded-full text-white text-sm font-medium mb-6 border border-white/25">
               <Heart className="w-4 h-4" />
               <span>Licensed Integrative Physiotherapy — MAHPC(PT)06056</span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 text-primary-foreground tracking-tight">
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 text-white tracking-tight">
               Care That Comes<br />
               <span className="text-secondary">to You.</span>
             </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 leading-relaxed max-w-lg">
+            <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed max-w-lg">
               Integrative physiotherapy, elder wellness, and medical escort services — hands-on care delivered to your home across the Klang Valley.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -117,7 +118,7 @@ export default function Home() {
               <Button
                 variant="outline"
                 size="lg"
-                className="rounded-full text-lg px-8 border-secondary/40 text-secondary hover:bg-secondary/10 font-medium bg-transparent"
+                className="rounded-full text-lg px-8 border-white/40 text-white hover:bg-white/10 font-medium bg-transparent"
                 asChild
               >
                 <a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer">
@@ -157,8 +158,8 @@ export default function Home() {
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 aspect-[4/5] md:aspect-square">
                 <img
-                  src={PC_ASSETS.experience2}
-                  alt="Ping Care Wellness — Professional Treatment"
+                  src={PC_ASSETS.medicalEscort}
+                  alt="Ping Care Wellness — Medical Escort & Note Taking"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
@@ -288,8 +289,8 @@ export default function Home() {
               <div className="aspect-video overflow-hidden">
                 <img
                   src={PC_ASSETS.heroImage}
-                  alt="Mobile Physiotherapy"
-                  className="w-full h-full object-cover"
+                  alt="Integrative Physiotherapy — Hands-on Elder Care"
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
               <CardContent className="p-8">
@@ -328,11 +329,12 @@ export default function Home() {
 
             {/* Service 2: Medical Escort & Coordination */}
             <Card className="overflow-hidden border-2 border-secondary/30 hover:border-secondary/50 transition-colors">
-              <div className="aspect-video overflow-hidden bg-muted flex items-center justify-center">
-                <div className="text-center p-8">
-                  <Shield className="w-16 h-16 text-secondary mx-auto mb-4" />
-                  <span className="text-muted-foreground text-sm">Medical Escort & Care Coordination</span>
-                </div>
+              <div className="aspect-video overflow-hidden">
+                <img
+                  src={PC_ASSETS.medicalEscort}
+                  alt="Medical Escort & Note Taking"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <CardContent className="p-8">
                 <div className="flex items-center gap-2 mb-4">
@@ -407,7 +409,7 @@ export default function Home() {
                 <div>
                   <h4 className="font-bold text-primary">Ping Care AI Assistant</h4>
                   <p className="text-sm text-muted-foreground">
-                    Powered by Longevity Valley Agentic Commerce — available 24/7 on Telegram to answer questions and schedule visits.
+                    Powered by Longevity Valley Healthcare AI Platform — available 24/7 on Telegram to answer questions and schedule visits.
                   </p>
                 </div>
               </div>
@@ -422,8 +424,8 @@ export default function Home() {
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
                 <img
-                  src={PC_ASSETS.experience2}
-                  alt="Ping Care Wellness Treatment"
+                  src={PC_ASSETS.heroImage}
+                  alt="Yip Sook Ping — Integrative Physiotherapy Session"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
@@ -489,12 +491,19 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="flex justify-center"
+              className="flex flex-col items-center gap-6"
             >
-              <div className="bg-card rounded-3xl p-8 shadow-2xl border border-border/50 max-w-sm">
-                <div className="text-center mb-4">
-                  <h4 className="font-bold text-primary text-lg">Scan to Chat</h4>
-                  <p className="text-muted-foreground text-sm">@Ping_Care_Bot on Telegram</p>
+              <div className="rounded-3xl overflow-hidden shadow-2xl border border-border/50 max-w-md">
+                <img
+                  src={PC_ASSETS.aiAssistant}
+                  alt="Ping Care Wellness 24/7 AI Assistant"
+                  className="w-full object-cover"
+                />
+              </div>
+              <div className="bg-card rounded-2xl p-6 shadow-xl border border-border/50 max-w-xs">
+                <div className="text-center mb-3">
+                  <h4 className="font-bold text-primary text-base">Scan to Chat</h4>
+                  <p className="text-muted-foreground text-xs">@Ping_Care_Bot on Telegram</p>
                 </div>
                 <img
                   src={PC_ASSETS.telegramQR}
