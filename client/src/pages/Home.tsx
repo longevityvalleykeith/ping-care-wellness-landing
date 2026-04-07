@@ -17,6 +17,7 @@ const PC_ASSETS = {
 // Contact links
 const WHATSAPP_LINK = "https://wa.me/60182905768?text=Hi%20Sook%20Ping,%20I%20am%20interested%20in%20Ping%20Care%20Wellness%20services.";
 const TELEGRAM_LINK = "https://t.me/Ping_Care_Bot";
+const TELEGRAM_BOOKING_LINK = "https://t.me/Ping_Care_Bot?start=book";
 const PHONE_NUMBER = "+6018-290 5768";
 
 // Social media stubs (future extension)
@@ -117,14 +118,13 @@ export default function Home() {
                 </a>
               </Button>
               <Button
-                variant="outline"
                 size="lg"
-                className="rounded-full text-lg px-8 border-white/40 text-white hover:bg-white/10 font-medium bg-transparent"
+                className="rounded-full text-lg px-8 bg-[#0088cc] hover:bg-[#0088cc]/90 text-white font-semibold shadow-lg shadow-[#0088cc]/20"
                 asChild
               >
-                <a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer">
+                <a href={TELEGRAM_BOOKING_LINK} target="_blank" rel="noopener noreferrer">
                   <Send className="w-4 h-4 mr-2" />
-                  Chat with Ping Care AI
+                  Book via AI Assistant
                 </a>
               </Button>
             </div>
