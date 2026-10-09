@@ -21,6 +21,8 @@ export const CONTACT = {
   whatsappNumber: "60182905768",
   phoneDisplay: "+6018-290 5768",
   phoneE164: "+60182905768",
+  // Ping Care is not an emergency service; this is the national number to call first.
+  emergency: "In a medical emergency, call 999 (Malaysia) first.",
 } as const;
 
 export const SERVICES = [

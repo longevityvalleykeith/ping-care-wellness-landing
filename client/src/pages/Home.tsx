@@ -371,9 +371,10 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-16">
               <motion.div {...fadeInLeft}>
                 <h2 className="text-4xl font-bold mb-6">Get in Touch</h2>
-                <p className="text-primary-foreground/80 text-lg mb-8">
+                <p className="text-primary-foreground/80 text-lg mb-4">
                   Contact Sook Ping to discuss your needs or arrange a home visit.
                 </p>
+                <p className="font-semibold mb-8">{CONTACT.emergency}</p>
                 <ul className="space-y-6">
                   <li className="flex items-center gap-4">
                     <span className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">

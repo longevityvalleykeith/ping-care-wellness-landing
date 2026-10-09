@@ -70,6 +70,7 @@ export function llmsTxt(): string {
 - Service area: ${PRACTICE.serviceAreaLabel} — ${PRACTICE.serviceArea.join(", ")}
 - Visits: ${PRACTICE.visitSettings.join(", ")}
 - Contact: WhatsApp ${CONTACT.phoneDisplay} (${whatsappLink()})
+- ${CONTACT.emergency}
 
 ## Services
 

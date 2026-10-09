@@ -98,13 +98,14 @@ export function createTools(
     {
       name: "get_contact_options",
       title: "Contact options",
-      description: "How to reach Ping Care: WhatsApp and phone.",
+      description: "How to reach Ping Care: WhatsApp and phone. Ping Care is not an emergency service.",
       inputSchema: NO_INPUT,
       annotations: { readOnlyHint: true },
       execute: async () => ({
         whatsapp: whatsappLink(),
         phone: CONTACT.phoneDisplay,
         phoneLink: PHONE_LINK,
+        emergency: CONTACT.emergency,
       }),
     },
     {

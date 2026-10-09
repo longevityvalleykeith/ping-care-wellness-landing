@@ -52,3 +52,12 @@ describe("WebMCP tools", () => {
     }
   });
 });
+
+describe("emergency guidance", () => {
+  it("get_contact_options tells an agent to call Malaysia's 999 first, never 911", async () => {
+    const tool = tools.find((t) => t.name === "get_contact_options")!;
+    const result = (await tool.execute({})) as { emergency: string };
+    expect(result.emergency).toMatch(/999/);
+    expect(JSON.stringify(result)).not.toMatch(/911/);
+  });
+});
