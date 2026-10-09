@@ -4,6 +4,7 @@ import { BOOKING_IFRAME_SANDBOX } from "@/content/booking-embed";
 import { bookingEmbed, privacyNoticeUrl } from "@/content/booking";
 import {
   CONTACT,
+  GETTING_THERE,
   PHONE_LINK,
   PRACTICE,
   SERVICES,
@@ -324,6 +325,18 @@ export default function Home() {
                 A request is not yet a booking. Sook Ping confirms every visit with you directly, and you pay at the
                 visit, not online.
               </p>
+            </div>
+
+            <div className="mb-10 rounded-2xl border border-border/60 bg-muted p-6">
+              <h3 className="font-bold text-primary text-lg mb-3">Getting there</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                {GETTING_THERE.map((line) => (
+                  <li key={line} className="flex gap-2">
+                    <Check className="w-4 h-4 text-accent shrink-0 mt-1" aria-hidden="true" />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {bookingEmbed.kind === "on" ? (

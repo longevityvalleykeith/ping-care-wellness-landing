@@ -15,6 +15,8 @@ export const PRACTICE = {
   description:
     "Integrative physiotherapy, elder wellness, and medical escort services — hands-on care delivered to your home across the Klang Valley.",
   visitSettings: ["Home", "Care facilities", "Hospitals"],
+  // The districts she actually visits — hers to state. Empty means no area pages.
+  districts: [] as readonly string[],
 } as const;
 
 export const CONTACT = {
@@ -70,3 +72,12 @@ export function whatsappLink(serviceId?: ServiceId): string {
 }
 
 export const PHONE_LINK = `tel:${CONTACT.phoneE164}`;
+
+// Transport guidance for seniors. Ping Care offers accompaniment as a service;
+// the ride itself stays the family's own booking, so no money moves through
+// this page or through LV.
+export const GETTING_THERE = [
+  "Home visits: Sook Ping comes to you — no travel needed.",
+  "Hospital appointments: book Medical Escort and Sook Ping can accompany your family member and take notes.",
+  "Rides: book with your usual ride-hailing app or a family driver. Ping Care does not book or charge for rides.",
+] as const;

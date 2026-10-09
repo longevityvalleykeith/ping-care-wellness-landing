@@ -11,6 +11,7 @@ import {
   robotsTxt,
   sitemapXml,
 } from "./client/src/content/head";
+import { areaPages } from "./client/src/content/areas";
 import { PRACTICE } from "./client/src/content/practice";
 
 // Writes the CSP meta tag, canonical link, JSON-LD block and a no-JavaScript
@@ -34,6 +35,9 @@ function practiceHead(env: Record<string, string>): Plugin {
         ["llms.txt", llmsTxt()],
       ]) {
         this.emitFile({ type: "asset", fileName, source });
+      }
+      for (const page of areaPages(PRACTICE.districts)) {
+        this.emitFile({ type: "asset", fileName: page.fileName, source: page.html });
       }
     },
     transformIndexHtml() {

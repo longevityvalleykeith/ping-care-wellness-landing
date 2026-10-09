@@ -1,5 +1,6 @@
 import type { BookingEmbed } from "./booking-embed";
-import { CONTACT, PRACTICE, SERVICES, whatsappLink } from "./practice";
+import { slugify } from "./areas";
+import { CONTACT, GETTING_THERE, PRACTICE, SERVICES, whatsappLink } from "./practice";
 
 // Built into index.html at build time, so crawlers and agents that do not run
 // JavaScript still read the practice facts. States only what the page states:
@@ -77,6 +78,10 @@ export function llmsTxt(): string {
 
 ${services}
 
+## Getting there
+
+${GETTING_THERE.map((line) => `- ${line}`).join("\n")}
+
 ## Booking
 
 A visit request is not a booking: the practitioner confirms every visit directly, and payment is made at the visit, not online.
@@ -88,9 +93,10 @@ export function robotsTxt(): string {
 }
 
 export function sitemapXml(): string {
+  const areas = PRACTICE.districts.map((d) => `\n  <url><loc>${PRACTICE.url}/areas/${slugify(d)}.html</loc></url>`).join("");
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>${PRACTICE.url}/</loc></url>
+  <url><loc>${PRACTICE.url}/</loc></url>${areas}
 </urlset>
 `;
 }
