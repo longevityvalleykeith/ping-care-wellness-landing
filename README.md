@@ -13,13 +13,15 @@ and the schema.org JSON-LD block all read from it. Change a fact there, not in a
 ## Booking
 
 The "Book a visit" section embeds a Calendesk booking page only when
-`VITE_PC_BOOKING_EMBED_URL` is set at build time to an `https://*.calendesk.net` page. LV's
-shared catalogue hosts (`vedowellness.calendesk.net`, `lv-wellness-passport.calendesk.net`)
-are refused, and the build fails on any refused value. Unset, the section shows a WhatsApp
-fallback. When set, the page's CSP allows framing exactly that one origin.
+`VITE_PC_BOOKING_EMBED_URL` is set at build time to Ping Care's own Calendesk site. The
+allowed hosts are listed in `client/src/content/booking-embed.ts` (today
+`7dgf0msykg.calendesk.net`; add the alias there when one is chosen). Any other host —
+LV's shared catalogue, other partners, dead tenants — is refused, and the build fails on a
+refused value. Unset, the section shows a WhatsApp fallback. When set, the page's CSP allows
+framing exactly that one origin.
 
-Keep it unset until Ping Care has its own Calendesk page whose services take no online
-payment (LV rule: all charges go through LV's transactional record first). The copy says
+Keep it unset until that site's settings read back with online payment off (LV rule: all
+charges go through LV's transactional record first). The copy says
 "request", not "booked": a visit is booked only once the practitioner confirms it.
 
 ## WebMCP

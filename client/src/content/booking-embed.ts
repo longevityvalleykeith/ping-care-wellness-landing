@@ -1,12 +1,15 @@
 // The Calendesk booking page is embedded only when VITE_PC_BOOKING_EMBED_URL is
-// set to an allowed host. Until Ping Care has its own Calendesk page with online
-// payment switched off, the variable stays unset and the page shows a WhatsApp
-// fallback instead of a widget. This module reads no environment itself, so the
-// build config can use it too.
+// set to Ping Care's own Calendesk site. Keep it unset until that site's settings
+// read back with online payment off; meanwhile the page shows a WhatsApp fallback.
+// This module reads no environment itself, so the build config can use it too.
 
-// Hosts that serve LV's shared Calendesk catalogue (other partners' services,
-// some with online payment). Embedding them here would sell services that are
-// not Ping Care's, so they are refused even though they are calendesk.net.
+// Ping Care's own Calendesk site(s). Add the alias here when one is chosen.
+// Any other calendesk.net host — LV's shared catalogue, other partners, dead
+// tenants — is refused: embedding it would show services that are not hers.
+const PING_CARE_BOOKING_HOSTS = new Set(["7dgf0msykg.calendesk.net"]);
+
+// Named separately so the refusal says why: these serve LV's shared catalogue
+// (other partners' services, some with online payment).
 const SHARED_CATALOGUE_HOSTS = new Set([
   "vedowellness.calendesk.net",
   "lv-wellness-passport.calendesk.net",
@@ -33,6 +36,9 @@ export function resolveBookingEmbed(raw: string | undefined): BookingEmbed {
   }
   if (SHARED_CATALOGUE_HOSTS.has(url.hostname)) {
     return { kind: "refused", reason: "shared LV catalogue, not a Ping Care page" };
+  }
+  if (!PING_CARE_BOOKING_HOSTS.has(url.hostname)) {
+    return { kind: "refused", reason: "not Ping Care's Calendesk site" };
   }
   if (url.username || url.password || url.hash) {
     return { kind: "refused", reason: "credentials or fragment in URL" };
