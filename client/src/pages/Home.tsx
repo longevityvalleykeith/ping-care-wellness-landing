@@ -50,7 +50,8 @@ export default function Home() {
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
         {/* Navigation */}
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/40">
+        <header>
+        <nav aria-label="Main" className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/40">
           <div className="container mx-auto px-6 py-4 flex justify-between items-center gap-4">
             <a href="#top" className="flex items-center gap-3">
               <img
@@ -68,16 +69,16 @@ export default function Home() {
               </span>
             </a>
             <div className="hidden md:flex space-x-8 text-sm font-medium text-muted-foreground">
-              <a href="#services" className="hover:text-accent transition-colors">
+              <a href="#services" className="inline-block py-2 hover:text-accent transition-colors">
                 Services
               </a>
-              <a href="#about" className="hover:text-accent transition-colors">
+              <a href="#about" className="inline-block py-2 hover:text-accent transition-colors">
                 About
               </a>
-              <a href="#booking" className="hover:text-accent transition-colors">
+              <a href="#booking" className="inline-block py-2 hover:text-accent transition-colors">
                 Book a visit
               </a>
-              <a href="#contact" className="hover:text-accent transition-colors">
+              <a href="#contact" className="inline-block py-2 hover:text-accent transition-colors">
                 Contact
               </a>
             </div>
@@ -89,7 +90,9 @@ export default function Home() {
             </Button>
           </div>
         </nav>
+        </header>
 
+        <main>
         {/* Hero */}
         <section
           id="top"
@@ -143,14 +146,14 @@ export default function Home() {
                 <Card className="border-2 border-accent/30">
                   <CardContent className="p-8 space-y-4">
                     <Shield className="w-10 h-10 text-accent" aria-hidden="true" />
-                    <h3 className="font-bold text-2xl text-primary">Emmett Technique Specialist</h3>
+                    <p className="font-bold text-2xl text-primary">Emmett Technique Specialist</p>
                     <p className="text-muted-foreground">
                       Certified{" "}
                       <a
                         href="https://www.emmett-technique-hq.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-accent underline"
+                        className="inline-block py-1 text-accent underline"
                       >
                         Emmett Technique
                       </a>{" "}
@@ -411,7 +414,7 @@ export default function Home() {
                         href={whatsappLink()}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary-foreground/80 hover:underline"
+                        className="inline-block py-1 text-primary-foreground/80 hover:underline"
                       >
                         {CONTACT.phoneDisplay}
                       </a>
@@ -423,7 +426,7 @@ export default function Home() {
                     </span>
                     <span>
                       <span className="block font-bold">Call / SMS</span>
-                      <a href={PHONE_LINK} className="text-primary-foreground/80 hover:underline">
+                      <a href={PHONE_LINK} className="inline-block py-1 text-primary-foreground/80 hover:underline">
                         {CONTACT.phoneDisplay}
                       </a>
                     </span>
@@ -464,6 +467,8 @@ export default function Home() {
           </div>
         </section>
 
+        </main>
+
         {/* Footer */}
         <footer className="bg-primary-foreground text-primary py-12 border-t border-border/10">
           <div className="container px-6">
@@ -478,7 +483,7 @@ export default function Home() {
                 />
                 <span className="text-lg font-bold">{PRACTICE.name}</span>
               </div>
-              <p className="text-primary/70 text-sm text-center">
+              <p className="text-primary/80 text-sm text-center">
                 {PRACTICE.nameZh} — Licensed Integrative Physiotherapy · Emmett Technique · {PRACTICE.serviceAreaLabel}
               </p>
               <a
@@ -486,12 +491,12 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp Ping Care Wellness"
-                className="text-primary/70 hover:text-primary transition-colors"
+                className="inline-flex p-2 text-primary/80 hover:text-primary transition-colors"
               >
                 <MessageCircle className="w-5 h-5" aria-hidden="true" />
               </a>
             </div>
-            <p className="pt-8 mt-8 border-t border-primary/10 text-center text-primary/60 text-sm">
+            <p className="pt-8 mt-8 border-t border-primary/10 text-center text-primary/80 text-sm">
               &copy; {new Date().getFullYear()} {PRACTICE.name}. All rights reserved. {PRACTICE.registration}
             </p>
           </div>
