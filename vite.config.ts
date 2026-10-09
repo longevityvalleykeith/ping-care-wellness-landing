@@ -3,9 +3,19 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig, loadEnv, type Plugin } from "vite";
 import { resolveBookingEmbed } from "./client/src/content/booking-embed";
-import { contentSecurityPolicy, practiceJsonLd } from "./client/src/content/head";
+import {
+  contentSecurityPolicy,
+  llmsTxt,
+  noscriptSummary,
+  practiceJsonLd,
+  robotsTxt,
+  sitemapXml,
+} from "./client/src/content/head";
+import { PRACTICE } from "./client/src/content/practice";
 
-// Writes the JSON-LD block and the CSP meta tag into the built index.html.
+// Writes the CSP meta tag, canonical link, JSON-LD block and a no-JavaScript
+// summary into the built index.html, and emits robots.txt, sitemap.xml and
+// llms.txt — all from the content module.
 // Build only: the dev server needs inline scripts for hot reload.
 function practiceHead(env: Record<string, string>): Plugin {
   const embed = resolveBookingEmbed(env.VITE_PC_BOOKING_EMBED_URL);
@@ -15,8 +25,22 @@ function practiceHead(env: Record<string, string>): Plugin {
   return {
     name: "practice-head",
     apply: "build",
+    generateBundle() {
+      for (const [fileName, source] of [
+        ["robots.txt", robotsTxt()],
+        ["sitemap.xml", sitemapXml()],
+        ["llms.txt", llmsTxt()],
+      ]) {
+        this.emitFile({ type: "asset", fileName, source });
+      }
+    },
     transformIndexHtml() {
       return [
+        {
+          tag: "link",
+          attrs: { rel: "canonical", href: `${PRACTICE.url}/` },
+          injectTo: "head",
+        },
         {
           tag: "meta",
           attrs: { "http-equiv": "Content-Security-Policy", content: contentSecurityPolicy(embed) },
@@ -27,6 +51,11 @@ function practiceHead(env: Record<string, string>): Plugin {
           attrs: { type: "application/ld+json" },
           children: JSON.stringify(practiceJsonLd()).replace(/</g, "\\u003c"),
           injectTo: "head",
+        },
+        {
+          tag: "noscript",
+          children: noscriptSummary(),
+          injectTo: "body-prepend",
         },
       ];
     },

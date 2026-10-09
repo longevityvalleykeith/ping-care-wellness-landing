@@ -110,8 +110,7 @@ export default function Home() {
                 <span className="text-secondary">to You.</span>
               </h1>
               <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 leading-relaxed max-w-lg">
-                Integrative physiotherapy, elder wellness, and medical escort services — hands-on care delivered to
-                your home across the {PRACTICE.serviceAreaLabel}.
+                {PRACTICE.description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button

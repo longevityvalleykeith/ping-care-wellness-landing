@@ -12,6 +12,8 @@ export const PRACTICE = {
     "https://wlwzfjlvwaosonorsvyf.supabase.co/storage/v1/object/public/brand-assets/ping-care-wellness/logo.jpg",
   serviceArea: ["Kuala Lumpur", "Selangor"],
   serviceAreaLabel: "Klang Valley",
+  description:
+    "Integrative physiotherapy, elder wellness, and medical escort services — hands-on care delivered to your home across the Klang Valley.",
   visitSettings: ["Home", "Care facilities", "Hospitals"],
 } as const;
 
