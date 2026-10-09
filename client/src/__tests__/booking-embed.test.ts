@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { resolveBookingEmbed } from "@/content/booking-embed";
 import { contentSecurityPolicy, practiceJsonLd } from "@/content/head";
+import { BOOKING_IFRAME_SANDBOX, resolvePrivacyNotice } from "@/content/booking-embed";
 
 describe("resolveBookingEmbed", () => {
   it("is off when unset or blank", () => {
@@ -19,6 +20,7 @@ describe("resolveBookingEmbed", () => {
     ["https://fiqjnereae.calendesk.net", "not Ping Care's Calendesk site"],
     ["https://anyone-else.calendesk.net", "not Ping Care's Calendesk site"],
     ["https://user:pw@7dgf0msykg.calendesk.net", "credentials or fragment in URL"],
+    ["https://7dgf0msykg.calendesk.net:8443", "non-default port"],
   ])("refuses %s", (raw, reason) => {
     expect(resolveBookingEmbed(raw)).toEqual({ kind: "refused", reason });
   });
@@ -53,5 +55,35 @@ describe("practiceJsonLd", () => {
     const json = JSON.stringify(practiceJsonLd());
     expect(json).not.toMatch(/aggregateRating|review|verified/i);
     expect(practiceJsonLd()["@type"]).toBe("Physiotherapy");
+  });
+});
+
+describe("booking iframe sandbox", () => {
+  it("lets the widget run its form but never navigate this page or open un-sandboxed windows", () => {
+    const tokens = BOOKING_IFRAME_SANDBOX.split(" ");
+    expect(tokens).toEqual(expect.arrayContaining(["allow-scripts", "allow-forms", "allow-same-origin"]));
+    expect(tokens).not.toContain("allow-top-navigation");
+    expect(tokens).not.toContain("allow-top-navigation-by-user-activation");
+    expect(tokens).not.toContain("allow-popups-to-escape-sandbox");
+  });
+});
+
+describe("resolvePrivacyNotice", () => {
+  it("is required whenever the booking embed is on", () => {
+    const on = resolveBookingEmbed("https://7dgf0msykg.calendesk.net");
+    expect(resolvePrivacyNotice(on, undefined)).toEqual({ ok: false, reason: "booking embed needs a privacy notice URL" });
+    expect(resolvePrivacyNotice(on, "http://example.com/privacy")).toEqual({ ok: false, reason: "privacy notice must be https" });
+    expect(resolvePrivacyNotice(on, "https://pingcare.example/privacy")).toEqual({ ok: true, url: "https://pingcare.example/privacy" });
+  });
+
+  it("is optional while the embed is off", () => {
+    expect(resolvePrivacyNotice({ kind: "off" }, undefined)).toEqual({ ok: true, url: null });
+  });
+});
+
+describe("credential wording", () => {
+  it("states the registration as given by the practitioner, not as verified", () => {
+    const founder = practiceJsonLd().founder as { hasCredential: { description: string } };
+    expect(founder.hasCredential.description).toMatch(/as stated by the practitioner/i);
   });
 });

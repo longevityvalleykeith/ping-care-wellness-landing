@@ -2,7 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig, loadEnv, type Plugin } from "vite";
-import { resolveBookingEmbed } from "./client/src/content/booking-embed";
+import { resolveBookingEmbed, resolvePrivacyNotice } from "./client/src/content/booking-embed";
 import {
   contentSecurityPolicy,
   llmsTxt,
@@ -22,6 +22,8 @@ function practiceHead(env: Record<string, string>): Plugin {
   if (embed.kind === "refused") {
     throw new Error(`VITE_PC_BOOKING_EMBED_URL refused: ${embed.reason}`);
   }
+  const notice = resolvePrivacyNotice(embed, env.VITE_PC_PRIVACY_NOTICE_URL);
+  if (!notice.ok) throw new Error(`VITE_PC_PRIVACY_NOTICE_URL refused: ${notice.reason}`);
   return {
     name: "practice-head",
     apply: "build",

@@ -23,6 +23,7 @@ export function practiceJsonLd(): Record<string, unknown> {
         "@type": "EducationalOccupationalCredential",
         credentialCategory: "Professional registration",
         name: PRACTICE.registration,
+        description: "Registration number as stated by the practitioner.",
       },
     },
     makesOffer: SERVICES.map((s) => ({

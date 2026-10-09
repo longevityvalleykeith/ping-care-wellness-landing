@@ -43,7 +43,30 @@ export function resolveBookingEmbed(raw: string | undefined): BookingEmbed {
   if (url.username || url.password || url.hash) {
     return { kind: "refused", reason: "credentials or fragment in URL" };
   }
+  if (url.port) return { kind: "refused", reason: "non-default port" };
 
   // The widget accepts only cdWidget=1; any other query could carry guest data.
   return { kind: "on", src: `${url.origin}${url.pathname}?cdWidget=1`, origin: url.origin };
+}
+
+// The widget may run scripts and submit its own form inside its own origin. It
+// may not navigate this page, and any window it opens stays sandboxed.
+export const BOOKING_IFRAME_SANDBOX = "allow-scripts allow-forms allow-same-origin";
+
+export type PrivacyNotice = { ok: true; url: string | null } | { ok: false; reason: string };
+
+// A live booking form collects a guest's name and contact details, so the page
+// must link a privacy notice (naming Calendesk as processor) beside it.
+export function resolvePrivacyNotice(embed: BookingEmbed, raw: string | undefined): PrivacyNotice {
+  const value = raw?.trim();
+  if (embed.kind !== "on") return { ok: true, url: value || null };
+  if (!value) return { ok: false, reason: "booking embed needs a privacy notice URL" };
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch {
+    return { ok: false, reason: "privacy notice is not a URL" };
+  }
+  if (url.protocol !== "https:") return { ok: false, reason: "privacy notice must be https" };
+  return { ok: true, url: url.toString() };
 }

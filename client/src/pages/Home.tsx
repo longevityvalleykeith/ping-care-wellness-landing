@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { bookingEmbed } from "@/content/booking";
+import { BOOKING_IFRAME_SANDBOX } from "@/content/booking-embed";
+import { bookingEmbed, privacyNoticeUrl } from "@/content/booking";
 import {
   CONTACT,
   PHONE_LINK,
@@ -332,6 +333,7 @@ export default function Home() {
                   title="Request a visit with Ping Care Wellness"
                   loading="lazy"
                   referrerPolicy="strict-origin"
+                  sandbox={BOOKING_IFRAME_SANDBOX}
                   className="w-full h-[720px] border-0"
                 />
               </div>
@@ -360,6 +362,16 @@ export default function Home() {
                   WhatsApp Sook Ping
                 </a>{" "}
                 instead.
+                {privacyNoticeUrl && (
+                  <>
+                    {" "}
+                    How your details are handled:{" "}
+                    <a href={privacyNoticeUrl} target="_blank" rel="noopener noreferrer" className="text-accent underline">
+                      privacy notice
+                    </a>
+                    .
+                  </>
+                )}
               </p>
             )}
           </div>
