@@ -12,6 +12,7 @@ import {
   sitemapXml,
 } from "./client/src/content/head";
 import { areaPages } from "./client/src/content/areas";
+import { resolvePartnerOffer } from "./client/src/content/partner-offer";
 import { PRACTICE } from "./client/src/content/practice";
 
 // Writes the CSP meta tag, canonical link, JSON-LD block and a no-JavaScript
@@ -25,6 +26,12 @@ function practiceHead(env: Record<string, string>): Plugin {
   }
   const notice = resolvePrivacyNotice(embed, env.VITE_PC_PRIVACY_NOTICE_URL);
   if (!notice.ok) throw new Error(`VITE_PC_PRIVACY_NOTICE_URL refused: ${notice.reason}`);
+  const offer = resolvePartnerOffer({
+    url: env.VITE_PC_PARTNER_OFFER_URL,
+    id: env.VITE_PC_PARTNER_OFFER_ID,
+    expires: env.VITE_PC_PARTNER_OFFER_EXPIRES,
+  });
+  if (offer.kind === "refused") throw new Error(`VITE_PC_PARTNER_OFFER refused: ${offer.reason}`);
   return {
     name: "practice-head",
     apply: "build",

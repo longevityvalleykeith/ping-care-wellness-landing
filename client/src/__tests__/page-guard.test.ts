@@ -27,7 +27,7 @@ const banned: Array<[string, RegExp]> = [
   ["Telegram chatbot", /telegram|t\.me\/|Ping_Care_Bot/i],
   ["AI-generated visual graphics", /hero-physio|ai-assistant-247|medical-escort\.png|emmett-technique\.png|telegram-qr/],
   ["Manus editor runtime", /manus/i],
-  ["LV's backend WebMCP script (anonymous health-data tools)", /webmcp\.js|app\.longevityvalley\.ai/],
+  ["LV's backend WebMCP script or tool endpoints (anonymous health-data tools)", /webmcp\.js|\/api\/(gateway|mcp)\b/],
   ["unbacked PDPA claim", /PDPA Compliant/i],
   ["round-the-clock availability claim", /24\/7|day or night/i],
   ["placeholder analytics script", /%VITE_ANALYTICS/],

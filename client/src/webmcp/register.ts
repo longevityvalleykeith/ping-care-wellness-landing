@@ -1,3 +1,4 @@
+import { partnerOffer } from "@/content/offer";
 import { createTools, type WebMcpTool } from "./tools";
 
 type ModelContext = {
@@ -30,7 +31,7 @@ export function registerWebMcpTools(): AbortController | undefined {
   if (!modelContext) return undefined;
 
   const controller = new AbortController();
-  for (const tool of createTools(scrollToSection)) {
+  for (const tool of createTools(scrollToSection, partnerOffer)) {
     Promise.resolve(
       modelContext.registerTool(tool, { signal: controller.signal }),
     ).catch(() => {});

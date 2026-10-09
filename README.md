@@ -24,11 +24,26 @@ Keep it unset until that site's settings read back with online payment off (LV r
 charges go through LV's transactional record first). The copy says
 "request", not "booked": a visit is booked only once the practitioner confirms it.
 
+## Partner voucher (off until LV publishes it)
+
+Seniors aged 55+ whose first online booking with Ping Care is paid in full online earn an
+LV-minted voucher for 50% off one session with another LV CARE partner (one per guest;
+each partner's own catalogue terms apply). Longevity Valley mints it from its own payment
+record; the guest claims it on LV's verified receipt path. This page never mints, claims or
+charges — it shows the offer and links to the claim page.
+
+The card and the `get_partner_offer` tool appear only when all three are set at build time:
+`VITE_PC_PARTNER_OFFER_URL` (https, on `app.longevityvalley.ai` or `api.longevityvalley.ai`,
+not an `/api/` path, no query, fragment, port or credentials), `VITE_PC_PARTNER_OFFER_ID`
+and `VITE_PC_PARTNER_OFFER_EXPIRES` (`YYYY-MM-DD`, not past). Any refused value fails the
+build. Terms live in `client/src/content/partner-offer.ts`.
+
 ## WebMCP
 
 On browsers that expose `document.modelContext` (the W3C WebMCP draft), the page registers
-six read-only tools for visiting AI agents: `get_practice_profile`, `list_services`,
-`get_service_area`, `get_contact_options`, `start_whatsapp_enquiry` and `show_section`. They
+seven read-only tools for visiting AI agents: `get_practice_profile`, `list_services`,
+`get_service_area`, `get_contact_options`, `start_whatsapp_enquiry`, `get_partner_offer` and
+`show_section`. They
 answer from `practice.ts` only: no network calls, no personal or health details, no booking
 or payment. Do not load LV's `/api/gateway/webmcp.js` here — its tools are anonymous and
 send health questions to an LLM provider.

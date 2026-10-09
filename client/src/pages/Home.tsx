@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BOOKING_IFRAME_SANDBOX } from "@/content/booking-embed";
+import { PartnerOfferCard } from "@/components/PartnerOfferCard";
 import { bookingEmbed, privacyNoticeUrl } from "@/content/booking";
+import { partnerOffer } from "@/content/offer";
 import {
   CONTACT,
   GETTING_THERE,
@@ -520,6 +522,9 @@ export default function Home() {
                   </>
                 )}
               </p>
+            )}
+            {partnerOffer.kind === "live" && (
+              <PartnerOfferCard offer={partnerOffer} />
             )}
           </div>
         </section>

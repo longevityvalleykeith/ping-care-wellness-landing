@@ -7,6 +7,7 @@ import {
   whatsappLink,
   type ServiceId,
 } from "@/content/practice";
+import { PARTNER_OFFER_TERMS, type PartnerOffer } from "@/content/partner-offer";
 
 // WebMCP tools for AI agents visiting the page. Every tool answers from the
 // static content module: none calls a server, collects personal or health
@@ -45,6 +46,7 @@ const NO_INPUT: JsonSchema = {
 
 export function createTools(
   scrollToSection: (id: SectionId) => boolean,
+  offer: PartnerOffer = { kind: "off" },
 ): WebMcpTool[] {
   return [
     {
@@ -131,6 +133,18 @@ export function createTools(
           : undefined;
         return { url: whatsappLink(service) };
       },
+    },
+    {
+      name: "get_partner_offer",
+      title: "Partner voucher offer",
+      description:
+        "Ping Care's LV partner voucher for seniors 55+: who qualifies, how it is earned and where to claim it. This tool does not mint, claim or pay; the guest claims on Longevity Valley's page.",
+      inputSchema: NO_INPUT,
+      annotations: { readOnlyHint: true },
+      execute: async () =>
+        offer.kind === "live"
+          ? { available: true, ...PARTNER_OFFER_TERMS, expires: offer.expires, claimPage: offer.claimUrl }
+          : { available: false, reason: "Not available yet." },
     },
     {
       name: "show_section",
