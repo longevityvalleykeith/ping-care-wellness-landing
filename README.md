@@ -1,68 +1,45 @@
-# BMW Wellness Landing Page
+# Ping Care Wellness — landing page
 
-## 美康养身 Beauty Meridian Wellness
+Public landing page for Ping Care Wellness (萍心健康), Yip Sook Ping's licensed mobile
+integrative physiotherapy practice in the Klang Valley. A static Vite + React page served
+by Vercel from `dist/public`; there is no server.
 
-A premium landing page for BMW Wellness social health center in Cheras, Malaysia.
+## Where the facts live
 
-## Deployment Instructions
+Everything the page says about the practice — name, registration, service area, services,
+prices, WhatsApp number — is in `client/src/content/practice.ts`. The page, the WebMCP tools
+and the schema.org JSON-LD block all read from it. Change a fact there, not in a component.
 
-### Option 1: Vercel Dashboard (Recommended)
+## Booking
 
-1. Go to [vercel.com](https://vercel.com) and log in
-2. Click "Add New Project"
-3. Import the GitHub repository: `longevityvalleykeith/bmw-wellness-landing`
-4. Vercel will auto-detect the framework (Vite)
-5. Override settings if needed:
-   - Build Command: `npm run build`
-   - Output Directory: `dist/public`
-   - Install Command: `npm install`
-6. Click "Deploy"
+The "Book a visit" section embeds a Calendesk booking page only when
+`VITE_PC_BOOKING_EMBED_URL` is set at build time to an `https://*.calendesk.net` page. LV's
+shared catalogue hosts (`vedowellness.calendesk.net`, `lv-wellness-passport.calendesk.net`)
+are refused, and the build fails on any refused value. Unset, the section shows a WhatsApp
+fallback. When set, the page's CSP allows framing exactly that one origin.
 
-### Option 2: Vercel CLI
+Keep it unset until Ping Care has its own Calendesk page whose services take no online
+payment (LV rule: all charges go through LV's transactional record first). The copy says
+"request", not "booked": a visit is booked only once the practitioner confirms it.
+
+## WebMCP
+
+On browsers that expose `document.modelContext` (the W3C WebMCP draft), the page registers
+six read-only tools for visiting AI agents: `get_practice_profile`, `list_services`,
+`get_service_area`, `get_contact_options`, `start_whatsapp_enquiry` and `show_section`. They
+answer from `practice.ts` only: no network calls, no personal or health details, no booking
+or payment. Do not load LV's `/api/gateway/webmcp.js` here — its tools are anonymous and
+send health questions to an LLM provider.
+
+## Commands
 
 ```bash
-npm i -g vercel@latest
-vercel login
-cd bmw-wellness-landing
-vercel --prod
+npm ci --legacy-peer-deps
+npm run dev      # local dev server
+npm test         # vitest: tool safety, booking allowlist, CSP, source guard
+npm run check    # typecheck
+npm run build    # writes dist/public, with the CSP meta tag and JSON-LD
 ```
 
-## Tech Stack
-
-- **Framework**: Vite + React 19
-- **Styling**: Tailwind CSS 4
-- **Components**: Radix UI + shadcn/ui
-- **Animation**: Framer Motion
-- **Routing**: Wouter
-
-## BMW Wellness Brand Assets
-
-The landing page uses the following brand assets from Supabase:
-
-- `brand-assets/bmw-wellness/bmw-experience-1.jpg` - Hero image
-- `brand-assets/bmw-wellness/bmw-experience-2.jpg` - Capsule feature
-- `brand-assets/bmw-wellness/bmw-experience-3.jpg` - Services
-- `brand-assets/bmw-wellness/logo.png` - BMW logo
-
-## Color Palette
-
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Navy | #0F1B2E | Primary backgrounds, text |
-| Teal | #2E8B7A | Accent, CTAs |
-| Gold | #C9A96E | Secondary accents |
-| Cream | #F5F0E8 | Background |
-
-## Key Features
-
-- Hero section showcasing 12-in-1 Bio-Physics Energy Capsule Chamber
-- Two service cards: 12-in-1 Capsule + Bio-resonance Scan
-- About section with 美康养身 branding
-- Contact section with WhatsApp and Telegram CTAs
-- BMW AI assistant identity
-
-## Contact
-
-- **WhatsApp**: 011 703 21128
-- **Telegram**: @BMW_Wellness_Bot
-- **Address**: 11, Jalan 4/92B, Taman Kobena, Cheras, Malaysia
+`vercel.json` sends the headers a meta tag cannot carry: `frame-ancestors`,
+`X-Frame-Options`, `Permissions-Policy`, `X-Content-Type-Options` and `Referrer-Policy`.

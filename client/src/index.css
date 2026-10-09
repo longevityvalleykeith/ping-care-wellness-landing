@@ -197,3 +197,7 @@
     }
   }
 }
+/* Anchor targets clear the fixed navigation bar. */
+section[id] {
+  scroll-margin-top: 5rem;
+}
