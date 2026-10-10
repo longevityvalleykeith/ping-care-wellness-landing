@@ -123,6 +123,10 @@ export function noscriptSummary(offer: PartnerOffer = { kind: "off" }): string {
   const services = SERVICES.map((s) => `<li>${escapeHtml(s.name)} — ${escapeHtml(s.priceLabel)}</li>`).join("");
   const facts = partnerOfferFacts(offer);
   return [
+    // Ping Care is not an emergency service: the no-JavaScript reader gets the
+    // same 999 line the page, llms.txt and get_contact_options carry (GRADE-R4),
+    // and gets it FIRST, before anything else (GRADE-R5).
+    `<p>${escapeHtml(CONTACT.emergency)}</p>`,
     `<h1>${escapeHtml(PRACTICE.name)} (${escapeHtml(PRACTICE.nameZh)})</h1>`,
     `<p>${escapeHtml(PRACTICE.description)}</p>`,
     `<p>${escapeHtml(PRACTITIONER_LINE)}. `,
@@ -131,8 +135,5 @@ export function noscriptSummary(offer: PartnerOffer = { kind: "off" }): string {
     `<p>${escapeHtml(paymentStatement(offer))}</p>`,
     facts.length ? `<ul>${facts.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul>` : "",
     `<p><a href="${whatsappLink()}">WhatsApp ${escapeHtml(PRACTICE.practitioner)}</a></p>`,
-    // Ping Care is not an emergency service: the no-JavaScript reader gets the
-    // same 999 line the page, llms.txt and get_contact_options carry (GRADE-R4).
-    `<p>${escapeHtml(CONTACT.emergency)}</p>`,
   ].join("");
 }

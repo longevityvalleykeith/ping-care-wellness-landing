@@ -110,8 +110,9 @@ describe("emergency line in the no-JavaScript summary", () => {
   it.each([
     ["offer off", noscriptSummary()],
     ["offer on", noscriptSummary(live)],
-  ])("%s: says to call 999 (Malaysia) first", (_mode, html) => {
+  ])("%s: says to call 999 (Malaysia) first, as its very first line (GRADE-R5)", (_mode, html) => {
     expect(CONTACT.emergency).toBe("In a medical emergency, call 999 (Malaysia) first.");
-    expect(html).toContain(`<p>${CONTACT.emergency}</p>`);
+    expect(html.startsWith(`<p>${CONTACT.emergency}</p>`)).toBe(true);
+    expect(html.split(CONTACT.emergency)).toHaveLength(2); // once, not repeated at the end
   });
 });
