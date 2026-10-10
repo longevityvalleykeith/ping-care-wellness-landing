@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { llmsTxt, noscriptSummary, practiceJsonLd, robotsTxt, sitemapXml } from "@/content/head";
 import { PRACTICE, SERVICES } from "@/content/practice";
+import { PARTNER_OFFER_TERMS, resolvePartnerOffer } from "@/content/partner-offer";
 
 // The machine-readable surface (crawlers, answer engines, agents without
 // JavaScript) must carry the practice facts and nothing the page does not state.
@@ -49,3 +50,38 @@ describe("machine-readable surface", () => {
     expect(surfaces.noscript).toContain("https://wa.me/60182905768");
   });
 });
+
+// GRADE-R2 P2-C: llms.txt, the no-script summary and the page carry the same
+// payment and offer facts, and the two payment statements never meet.
+describe("payment and partner offer on the machine surface", () => {
+  const live = resolvePartnerOffer(
+    {
+      url: "https://app.longevityvalley.ai/offers/pc-50",
+      id: "pc-50",
+      expires: "2026-12-31",
+      checkout: "https://app.longevityvalley.ai/book/ping-care/first-visit",
+    },
+    new Date("2026-10-10T00:00:00Z"),
+  );
+
+  it("offer off: pay at the visit, not online, and no voucher anywhere", () => {
+    for (const text of [llmsTxt(), noscriptSummary()]) {
+      expect(text).toContain("Visits are paid at the visit, not online.");
+      expect(text).not.toMatch(/voucher|longevityvalley/i);
+    }
+  });
+
+  it("offer on: the conditional statement and the same offer facts, never 'not online'", () => {
+    for (const text of [llmsTxt(live), noscriptSummary(live)]) {
+      expect(text).not.toMatch(/not online/);
+      expect(text).toContain("your first booking can be paid online on Longevity Valley to earn the partner voucher");
+      expect(text).toContain("https://app.longevityvalley.ai/book/ping-care/first-visit");
+      expect(text).toContain("https://app.longevityvalley.ai/offers/pc-50");
+      expect(text).toContain(PARTNER_OFFER_TERMS.headline);
+      expect(text).toContain(PARTNER_OFFER_TERMS.eligibility);
+      expect(text).toContain("31 December 2026");
+    }
+    expect(llmsTxt(live)).toContain("## Partner voucher");
+  });
+});
+

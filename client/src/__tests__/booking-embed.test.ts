@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { resolveBookingEmbed } from "@/content/booking-embed";
 import { contentSecurityPolicy, practiceJsonLd } from "@/content/head";
-import { BOOKING_IFRAME_SANDBOX, resolvePrivacyNotice } from "@/content/booking-embed";
+import { BOOKING_IFRAME_SANDBOX, PRIVACY_NOTICE_HOSTS, resolvePrivacyNotice } from "@/content/booking-embed";
 
 describe("resolveBookingEmbed", () => {
   it("is off when unset or blank", () => {
@@ -73,7 +73,43 @@ describe("resolvePrivacyNotice", () => {
     const on = resolveBookingEmbed("https://7dgf0msykg.calendesk.net");
     expect(resolvePrivacyNotice(on, undefined)).toEqual({ ok: false, reason: "booking embed needs a privacy notice URL" });
     expect(resolvePrivacyNotice(on, "http://example.com/privacy")).toEqual({ ok: false, reason: "privacy notice must be https" });
-    expect(resolvePrivacyNotice(on, "https://pingcare.example/privacy")).toEqual({ ok: true, url: "https://pingcare.example/privacy" });
+    expect(resolvePrivacyNotice(on, "https://app.longevityvalley.ai/privacy/ping-care")).toEqual({
+      ok: true,
+      url: "https://app.longevityvalley.ai/privacy/ping-care",
+    });
+    expect(resolvePrivacyNotice(on, "https://7dgf0msykg.calendesk.net/privacy-policy")).toEqual({
+      ok: true,
+      url: "https://7dgf0msykg.calendesk.net/privacy-policy",
+    });
+  });
+
+  // GRADE-R2 P3: the notice lives on an allow-listed host only.
+  it.each([
+    ["https://evil.example/n?x=1", "privacy notice must be on LV's or Ping Care's own site"],
+    ["https://pingcare.example/privacy", "privacy notice must be on LV's or Ping Care's own site"],
+    ["https://vedowellness.calendesk.net/privacy", "privacy notice must be on LV's or Ping Care's own site"],
+    ["https://app.longevityvalley.ai.evil.example/privacy", "privacy notice must be on LV's or Ping Care's own site"],
+    ["https://app.longevityvalley.ai:8443/privacy", "privacy notice must carry no port or credentials"],
+    ["https://u:p@app.longevityvalley.ai/privacy", "privacy notice must carry no port or credentials"],
+    ["https://app.longevityvalley.ai/API/mcp", "privacy notice cannot be an LV tool endpoint"],
+    ["https://app.longevityvalley.ai/%61pi/gateway/x", "privacy notice cannot be an LV tool endpoint"],
+    ["https://app.longevityvalley.ai//api/x", "privacy notice cannot be an LV tool endpoint"],
+  ])("refuses notice %s", (raw, reason) => {
+    const on = resolveBookingEmbed("https://7dgf0msykg.calendesk.net");
+    expect(resolvePrivacyNotice(on, raw)).toEqual({ ok: false, reason });
+  });
+
+  it("checks a notice that is set even while the embed is off", () => {
+    expect(resolvePrivacyNotice({ kind: "off" }, "https://evil.example/n")).toEqual({
+      ok: false,
+      reason: "privacy notice must be on LV's or Ping Care's own site",
+    });
+  });
+
+  it("keeps the allow-list in one constant: LV's pages plus Ping Care's Calendesk site", () => {
+    expect(Array.from(PRIVACY_NOTICE_HOSTS).sort()).toEqual(
+      ["7dgf0msykg.calendesk.net", "api.longevityvalley.ai", "app.longevityvalley.ai"],
+    );
   });
 
   it("is optional while the embed is off", () => {

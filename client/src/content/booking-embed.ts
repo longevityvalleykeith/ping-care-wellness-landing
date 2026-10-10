@@ -3,6 +3,8 @@
 // read back with online payment off; meanwhile the page shows a WhatsApp fallback.
 // This module reads no environment itself, so the build config can use it too.
 
+import { LV_PAGE_HOSTS, normalisedPath } from "./lv-page-url";
+
 // Ping Care's own Calendesk site(s). Add the alias here when one is chosen.
 // Any other calendesk.net host — LV's shared catalogue, other partners, dead
 // tenants — is refused: embedding it would show services that are not hers.
@@ -55,12 +57,23 @@ export const BOOKING_IFRAME_SANDBOX = "allow-scripts allow-forms allow-same-orig
 
 export type PrivacyNotice = { ok: true; url: string | null } | { ok: false; reason: string };
 
+// Where the privacy notice beside the booking form may live: LV's pages or Ping
+// Care's own Calendesk site. Add Ping Care's own domain here once she has one.
+export const PRIVACY_NOTICE_HOSTS: ReadonlySet<string> = new Set([
+  ...Array.from(LV_PAGE_HOSTS),
+  ...Array.from(PING_CARE_BOOKING_HOSTS),
+]);
+
 // A live booking form collects a guest's name and contact details, so the page
 // must link a privacy notice (naming Calendesk as processor) beside it.
 export function resolvePrivacyNotice(embed: BookingEmbed, raw: string | undefined): PrivacyNotice {
   const value = raw?.trim();
-  if (embed.kind !== "on") return { ok: true, url: value || null };
-  if (!value) return { ok: false, reason: "booking embed needs a privacy notice URL" };
+  if (!value) {
+    return embed.kind === "on"
+      ? { ok: false, reason: "booking embed needs a privacy notice URL" }
+      : { ok: true, url: null };
+  }
+  // A notice that is set is checked even while the embed is off.
   let url: URL;
   try {
     url = new URL(value);
@@ -68,5 +81,16 @@ export function resolvePrivacyNotice(embed: BookingEmbed, raw: string | undefine
     return { ok: false, reason: "privacy notice is not a URL" };
   }
   if (url.protocol !== "https:") return { ok: false, reason: "privacy notice must be https" };
+  if (!PRIVACY_NOTICE_HOSTS.has(url.hostname)) {
+    return { ok: false, reason: "privacy notice must be on LV's or Ping Care's own site" };
+  }
+  if (url.port || url.username || url.password) {
+    return { ok: false, reason: "privacy notice must carry no port or credentials" };
+  }
+  const path = normalisedPath(url.pathname);
+  if (path === null) return { ok: false, reason: "privacy notice path does not decode" };
+  if (LV_PAGE_HOSTS.has(url.hostname) && path.split("/").find(Boolean) === "api") {
+    return { ok: false, reason: "privacy notice cannot be an LV tool endpoint" };
+  }
   return { ok: true, url: url.toString() };
 }

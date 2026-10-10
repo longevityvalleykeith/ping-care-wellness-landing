@@ -4,6 +4,7 @@ import { BOOKING_IFRAME_SANDBOX } from "@/content/booking-embed";
 import { PartnerOfferCard } from "@/components/PartnerOfferCard";
 import { bookingEmbed, privacyNoticeUrl } from "@/content/booking";
 import { partnerOffer } from "@/content/offer";
+import { paymentStatement } from "@/content/partner-offer";
 import {
   CONTACT,
   GETTING_THERE,
@@ -427,7 +428,7 @@ export default function Home() {
               </h2>
               <p className="text-muted-foreground text-lg max-w-xl mx-auto">
                 A request is not yet a booking. Sook Ping confirms every visit
-                with you directly, and you pay at the visit, not online.
+                with you directly. {paymentStatement(partnerOffer)}
               </p>
             </div>
 

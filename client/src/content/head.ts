@@ -1,5 +1,6 @@
 import type { BookingEmbed } from "./booking-embed";
 import { slugify } from "./areas";
+import { paymentStatement, partnerOfferFacts, type PartnerOffer } from "./partner-offer";
 import { CONTACT, GETTING_THERE, PRACTICE, SERVICES, whatsappLink } from "./practice";
 
 // Built into index.html at build time, so crawlers and agents that do not run
@@ -60,7 +61,7 @@ function escapeHtml(text: string): string {
 
 // Served at /llms.txt for AI answer engines: the same facts as the page, in
 // plain Markdown, with no claim the page does not make.
-export function llmsTxt(): string {
+export function llmsTxt(offer: PartnerOffer = { kind: "off" }): string {
   const services = SERVICES.map(
     (s) => `- ${s.name}: ${s.summary} (${s.priceLabel}; confirmed by the practitioner before any visit)`,
   ).join("\n");
@@ -84,8 +85,14 @@ ${GETTING_THERE.map((line) => `- ${line}`).join("\n")}
 
 ## Booking
 
-A visit request is not a booking: the practitioner confirms every visit directly, and payment is made at the visit, not online.
-`;
+A visit request is not a booking: the practitioner confirms every visit directly. ${paymentStatement(offer)}
+${offerSection(offer)}`;
+}
+
+function offerSection(offer: PartnerOffer): string {
+  const facts = partnerOfferFacts(offer);
+  if (facts.length === 0) return "";
+  return `\n## Partner voucher\n\n${facts.map((line) => `- ${line}`).join("\n")}\n`;
 }
 
 export function robotsTxt(): string {
@@ -103,14 +110,17 @@ export function sitemapXml(): string {
 
 // Shown only when JavaScript does not run, so crawlers and agents that do not
 // execute scripts still read the facts.
-export function noscriptSummary(): string {
+export function noscriptSummary(offer: PartnerOffer = { kind: "off" }): string {
   const services = SERVICES.map((s) => `<li>${escapeHtml(s.name)} — ${escapeHtml(s.priceLabel)}</li>`).join("");
+  const facts = partnerOfferFacts(offer);
   return [
     `<h1>${escapeHtml(PRACTICE.name)} (${escapeHtml(PRACTICE.nameZh)})</h1>`,
     `<p>${escapeHtml(PRACTICE.description)}</p>`,
     `<p>${escapeHtml(PRACTICE.practitioner)}, licensed integrative physiotherapist, ${escapeHtml(PRACTICE.registration)}. `,
     `Serving ${escapeHtml(PRACTICE.serviceArea.join(" and "))}.</p>`,
     `<ul>${services}</ul>`,
+    `<p>${escapeHtml(paymentStatement(offer))}</p>`,
+    facts.length ? `<ul>${facts.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul>` : "",
     `<p><a href="${whatsappLink()}">WhatsApp ${escapeHtml(PRACTICE.practitioner)}</a></p>`,
   ].join("");
 }

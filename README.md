@@ -24,19 +24,44 @@ Keep it unset until that site's settings read back with online payment off (LV r
 charges go through LV's transactional record first). The copy says
 "request", not "booked": a visit is booked only once the practitioner confirms it.
 
+A live booking form needs `VITE_PC_PRIVACY_NOTICE_URL` (the build fails without it). The
+notice must be https on one of the hosts in `PRIVACY_NOTICE_HOSTS`
+(`client/src/content/booking-embed.ts`): LV's pages (`app.longevityvalley.ai`,
+`api.longevityvalley.ai`, never an `/api` path) or Ping Care's own Calendesk site
+(`7dgf0msykg.calendesk.net`). Add Ping Care's own domain to that one constant when she has
+one. A notice that is set is checked even while the embed is off.
+
 ## Partner voucher (off until LV publishes it)
 
-Seniors aged 55+ whose first online booking with Ping Care is paid in full online earn an
-LV-minted voucher for 50% off one session with another LV CARE partner (one per guest;
-each partner's own catalogue terms apply). Longevity Valley mints it from its own payment
-record; the guest claims it on LV's verified receipt path. This page never mints, claims or
-charges — it shows the offer and links to the claim page.
+Seniors aged 55+ whose first online booking with Ping Care is paid in full on Longevity
+Valley's checkout earn an LV-minted voucher for 50% off one session with another LV CARE
+partner (one per guest; each partner's own catalogue terms apply). Longevity Valley mints it
+from its own payment record; the guest claims it on LV's verified receipt path. This page
+never mints, claims or charges — it shows the offer and links to LV's checkout and claim
+pages.
 
-The card and the `get_partner_offer` tool appear only when all three are set at build time:
-`VITE_PC_PARTNER_OFFER_URL` (https, on `app.longevityvalley.ai` or `api.longevityvalley.ai`,
-not an `/api/` path, no query, fragment, port or credentials), `VITE_PC_PARTNER_OFFER_ID`
-and `VITE_PC_PARTNER_OFFER_EXPIRES` (`YYYY-MM-DD`, not past). Any refused value fails the
-build. Terms live in `client/src/content/partner-offer.ts`.
+The card and the `get_partner_offer` tool appear only when all four are set at build time:
+
+| Variable | Rule |
+|---|---|
+| `VITE_PC_PARTNER_OFFER_URL` | the claim page |
+| `VITE_PC_FIRST_BOOKING_CHECKOUT_URL` | LV's first-booking checkout; the "Book and pay" step links here |
+| `VITE_PC_PARTNER_OFFER_ID` | the offer id |
+| `VITE_PC_PARTNER_OFFER_EXPIRES` | `YYYY-MM-DD`: a real calendar date, not past, at most 366 days after the build |
+
+Both URLs must be https on `app.longevityvalley.ai` or `api.longevityvalley.ai` (the one
+constant `LV_PAGE_HOSTS` in `client/src/content/lv-page-url.ts`), with no query, fragment,
+port or credentials, and a plain page path that is not an LV tool endpoint: the path is
+percent-decoded, lower-cased and has repeated slashes collapsed before the check, so
+`/API`, `/%61pi` and `//api` are refused like `/api`. Setting the claim page without the
+checkout fails the build: LV's first-booking checkout does not exist yet, so the offer
+cannot be switched on by mistake. Any refused value fails the build.
+
+With the offer off, the page, `llms.txt` and the no-script summary say visits are paid at
+the visit, not online. With it on, all three — and `get_partner_offer` — say "Visits are
+paid at the visit; your first booking can be paid online on Longevity Valley to earn the
+partner voucher" and carry the same offer facts (`paymentStatement` and
+`partnerOfferFacts` in `client/src/content/partner-offer.ts`, where the terms also live).
 
 ## WebMCP
 

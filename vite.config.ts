@@ -30,6 +30,7 @@ function practiceHead(env: Record<string, string>): Plugin {
     url: env.VITE_PC_PARTNER_OFFER_URL,
     id: env.VITE_PC_PARTNER_OFFER_ID,
     expires: env.VITE_PC_PARTNER_OFFER_EXPIRES,
+    checkout: env.VITE_PC_FIRST_BOOKING_CHECKOUT_URL,
   });
   if (offer.kind === "refused") throw new Error(`VITE_PC_PARTNER_OFFER refused: ${offer.reason}`);
   return {
@@ -39,7 +40,7 @@ function practiceHead(env: Record<string, string>): Plugin {
       for (const [fileName, source] of [
         ["robots.txt", robotsTxt()],
         ["sitemap.xml", sitemapXml()],
-        ["llms.txt", llmsTxt()],
+        ["llms.txt", llmsTxt(offer)],
       ]) {
         this.emitFile({ type: "asset", fileName, source });
       }
@@ -67,7 +68,7 @@ function practiceHead(env: Record<string, string>): Plugin {
         },
         {
           tag: "noscript",
-          children: noscriptSummary(),
+          children: noscriptSummary(offer),
           injectTo: "body-prepend",
         },
       ];

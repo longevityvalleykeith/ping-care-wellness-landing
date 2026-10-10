@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   PARTNER_OFFER_TERMS,
   formatOfferDate,
+  paymentStatement,
   type PartnerOffer,
 } from "@/content/partner-offer";
 import { Copy, ExternalLink } from "lucide-react";
@@ -13,19 +14,23 @@ function Ticket({
   label,
   value,
   tone,
+  href,
+  linkHint,
 }: {
   label: string;
   value: string;
   tone: "primary" | "soft";
+  // When set, the whole ticket is a link to that LV page.
+  href?: string;
+  linkHint?: string;
 }) {
   const toneClass =
     tone === "primary"
       ? "bg-primary text-primary-foreground"
       : "bg-secondary/25 text-primary border border-secondary/50";
-  return (
-    <div
-      className={`relative flex-1 rounded-2xl px-6 py-8 text-center ${toneClass}`}
-    >
+  const className = `relative flex-1 rounded-2xl px-6 py-8 text-center ${toneClass}`;
+  const body = (
+    <>
       {/* the ticket notches */}
       <span
         aria-hidden="true"
@@ -39,7 +44,24 @@ function Ticket({
         {label}
       </p>
       <p className="mt-2 text-2xl font-bold leading-tight">{value}</p>
-    </div>
+      {linkHint && (
+        <p className="mt-3 text-sm font-semibold underline underline-offset-4">
+          {linkHint}
+        </p>
+      )}
+    </>
+  );
+  return href ? (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${className} block hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
+    >
+      {body}
+    </a>
+  ) : (
+    <div className={className}>{body}</div>
   );
 }
 
@@ -72,10 +94,13 @@ export function PartnerOfferCard({ offer }: { offer: LiveOffer }) {
           tone="primary"
           label="Book and pay"
           value="Your first visit, online"
+          href={offer.checkoutUrl}
+          linkHint="Pay on Longevity Valley"
         />
         <Ticket tone="soft" label="Get" value={PARTNER_OFFER_TERMS.headline} />
       </div>
       <ul className="space-y-2 text-muted-foreground mb-6">
+        <li>{paymentStatement(offer)}</li>
         <li>{PARTNER_OFFER_TERMS.eligibility}</li>
         <li>{PARTNER_OFFER_TERMS.earn}</li>
         <li>{PARTNER_OFFER_TERMS.limit}</li>
