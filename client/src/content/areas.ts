@@ -1,4 +1,4 @@
-import { CONTACT, PRACTICE, SERVICES, whatsappLink } from "./practice";
+import { CONTACT, PRACTICE, PRACTITIONER_LINE, SERVICES, whatsappLink } from "./practice";
 
 export function slugify(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -25,7 +25,7 @@ export function areaPages(districts: readonly string[]): { fileName: string; htm
 </head><body>
 <main>
 <h1>${escapeHtml(title)}</h1>
-<p>${escapeHtml(PRACTICE.practitioner)}, licensed integrative physiotherapist (${escapeHtml(PRACTICE.registration)}, as stated by the practitioner), visits homes in ${escapeHtml(district)}.</p>
+<p>${escapeHtml(PRACTITIONER_LINE)}, visits homes in ${escapeHtml(district)}.</p>
 <ul>${services}</ul>
 <p>${escapeHtml(CONTACT.emergency)}</p>
 <p><a href="${whatsappLink()}">WhatsApp ${escapeHtml(PRACTICE.practitioner)}</a> · <a href="${PRACTICE.url}/">${escapeHtml(PRACTICE.name)}</a></p>

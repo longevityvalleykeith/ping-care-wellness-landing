@@ -31,6 +31,10 @@ const banned: Array<[string, RegExp]> = [
   ["unbacked PDPA claim", /PDPA Compliant/i],
   ["round-the-clock availability claim", /24\/7|day or night/i],
   ["placeholder analytics script", /%VITE_ANALYTICS/],
+  // GRADE-R2 P3: the registration is as stated by the practitioner, never "licensed".
+  ["unhedged licence claim", /licen[cs]ed/i],
+  // GRADE-R2 P3: fonts and styles are self-hosted.
+  ["third-party font or style origin", /fonts\.googleapis\.com|fonts\.gstatic\.com/],
 ];
 
 describe("shipped source", () => {

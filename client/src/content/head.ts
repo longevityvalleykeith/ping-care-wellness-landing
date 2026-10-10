@@ -1,7 +1,14 @@
 import type { BookingEmbed } from "./booking-embed";
 import { slugify } from "./areas";
 import { paymentStatement, partnerOfferFacts, type PartnerOffer } from "./partner-offer";
-import { CONTACT, GETTING_THERE, PRACTICE, SERVICES, whatsappLink } from "./practice";
+import {
+  CONTACT,
+  GETTING_THERE,
+  PRACTICE,
+  PRACTITIONER_LINE,
+  SERVICES,
+  whatsappLink,
+} from "./practice";
 
 // Built into index.html at build time, so crawlers and agents that do not run
 // JavaScript still read the practice facts. States only what the page states:
@@ -20,7 +27,7 @@ export function practiceJsonLd(): Record<string, unknown> {
     founder: {
       "@type": "Person",
       name: PRACTICE.practitioner,
-      jobTitle: "Licensed Integrative Physiotherapist",
+      jobTitle: "Integrative Physiotherapist",
       hasCredential: {
         "@type": "EducationalOccupationalCredential",
         credentialCategory: "Professional registration",
@@ -36,17 +43,19 @@ export function practiceJsonLd(): Record<string, unknown> {
   };
 }
 
-// The page's own Content-Security-Policy. frame-src opens to exactly one
+// The page's own Content-Security-Policy. Fonts and styles are self-hosted, so
+// no third-party style or font origin is allowed. frame-src opens to exactly one
 // Calendesk origin, and only when the booking embed is switched on.
 // frame-ancestors cannot be set from a meta tag; vercel.json sends it.
 export function contentSecurityPolicy(embed: BookingEmbed): string {
-  const logoOrigin = new URL(PRACTICE.logoUrl).origin;
+  const logo = new URL(PRACTICE.logoUrl, PRACTICE.url);
+  const imgSrc = logo.origin === new URL(PRACTICE.url).origin ? "'self' data:" : `'self' data: ${logo.origin}`;
   return [
     "default-src 'self'",
     "script-src 'self'",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src https://fonts.gstatic.com",
-    `img-src 'self' data: ${logoOrigin}`,
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    `img-src ${imgSrc}`,
     "connect-src 'self'",
     `frame-src ${embed.kind === "on" ? embed.origin : "'none'"}`,
     "object-src 'none'",
@@ -69,7 +78,7 @@ export function llmsTxt(offer: PartnerOffer = { kind: "off" }): string {
 
 > ${PRACTICE.description}
 
-- Practitioner: ${PRACTICE.practitioner}, licensed integrative physiotherapist (registration ${PRACTICE.registration}, as stated by the practitioner)
+- Practitioner: ${PRACTITIONER_LINE}
 - Service area: ${PRACTICE.serviceAreaLabel} — ${PRACTICE.serviceArea.join(", ")}
 - Visits: ${PRACTICE.visitSettings.join(", ")}
 - Contact: WhatsApp ${CONTACT.phoneDisplay} (${whatsappLink()})
@@ -116,7 +125,7 @@ export function noscriptSummary(offer: PartnerOffer = { kind: "off" }): string {
   return [
     `<h1>${escapeHtml(PRACTICE.name)} (${escapeHtml(PRACTICE.nameZh)})</h1>`,
     `<p>${escapeHtml(PRACTICE.description)}</p>`,
-    `<p>${escapeHtml(PRACTICE.practitioner)}, licensed integrative physiotherapist, ${escapeHtml(PRACTICE.registration)}. `,
+    `<p>${escapeHtml(PRACTITIONER_LINE)}. `,
     `Serving ${escapeHtml(PRACTICE.serviceArea.join(" and "))}.</p>`,
     `<ul>${services}</ul>`,
     `<p>${escapeHtml(paymentStatement(offer))}</p>`,

@@ -111,7 +111,8 @@ export default function Home() {
             <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-700 motion-reduce:animate-none">
               <p className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm font-medium mb-6 border border-white/25">
                 <Heart className="w-4 h-4" aria-hidden="true" />
-                Licensed Integrative Physiotherapy · {PRACTICE.registration}
+                Integrative Physiotherapy · Registration{" "}
+                {PRACTICE.registration} (as stated)
               </p>
               <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 tracking-tight">
                 Care That Comes
@@ -196,9 +197,9 @@ export default function Home() {
                   </span>
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8">
-                  Led by {PRACTICE.practitioner}, a licensed integrative
-                  physiotherapist ({PRACTICE.registration}) specializing in
-                  elder care. She combines evidence-based physiotherapy with
+                  Led by {PRACTICE.practitioner}, an integrative
+                  physiotherapist (registration {PRACTICE.registration}, as
+                  stated by the practitioner) specializing in elder care. She combines evidence-based physiotherapy with
                   Emmett Technique, functional fitness assessment, and holistic
                   rehabilitation — bridging clinical rigour with compassionate,
                   person-centred care.
@@ -363,9 +364,10 @@ export default function Home() {
                 </h2>
                 <div className="space-y-6 text-lg text-muted-foreground">
                   <p>
-                    Founded by {PRACTICE.practitioner}, a licensed integrative
-                    physiotherapist registered with MAHPC (
-                    {PRACTICE.registration}), {PRACTICE.name} provides
+                    Founded by {PRACTICE.practitioner}, an integrative
+                    physiotherapist (MAHPC registration{" "}
+                    {PRACTICE.registration}, as stated by the practitioner),{" "}
+                    {PRACTICE.name} provides
                     compassionate mobile healthcare for seniors and those with
                     complex medical needs across the {PRACTICE.serviceAreaLabel}
                     .
@@ -637,7 +639,7 @@ export default function Home() {
               <span className="text-lg font-bold">{PRACTICE.name}</span>
             </div>
             <p className="text-primary/80 text-sm text-center">
-              {PRACTICE.nameZh} — Licensed Integrative Physiotherapy · Emmett
+              {PRACTICE.nameZh} — Integrative Physiotherapy · Emmett
               Technique · {PRACTICE.serviceAreaLabel}
             </p>
             <a

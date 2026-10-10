@@ -19,6 +19,11 @@ export const PRACTICE = {
   districts: [] as readonly string[],
 } as const;
 
+// How every surface names the practitioner's credential. The registration is as
+// she states it; LV has not verified it, so no surface claims a licence.
+export const PRACTITIONER_LINE =
+  `${PRACTICE.practitioner}, integrative physiotherapist (registration ${PRACTICE.registration}, as stated by the practitioner)`;
+
 export const CONTACT = {
   whatsappNumber: "60182905768",
   phoneDisplay: "+6018-290 5768",
@@ -32,10 +37,10 @@ export const SERVICES = [
     id: "integrative-physiotherapy",
     name: "Integrative Physiotherapy",
     summary:
-      "Licensed integrative physiotherapy at your home: hands-on manual therapy, Emmett Technique and functional fitness assessment for elder rehabilitation.",
+      "Integrative physiotherapy at your home: hands-on manual therapy, Emmett Technique and functional fitness assessment for elder rehabilitation.",
     priceLabel: "From RM 150 per session",
     includes: [
-      "Licensed integrative physio assessment",
+      "Integrative physio assessment",
       "Emmett Technique",
       "Functional fitness and mobility testing",
       "3-week progress review cycle",

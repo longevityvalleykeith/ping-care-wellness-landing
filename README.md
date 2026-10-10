@@ -1,7 +1,7 @@
 # Ping Care Wellness — landing page
 
-Public landing page for Ping Care Wellness (萍心健康), Yip Sook Ping's licensed mobile
-integrative physiotherapy practice in the Klang Valley. A static Vite + React page served
+Public landing page for Ping Care Wellness (萍心健康), Yip Sook Ping's mobile integrative
+physiotherapy practice in the Klang Valley. A static Vite + React page served
 by Vercel from `dist/public`; there is no server.
 
 ## Where the facts live
@@ -9,6 +9,10 @@ by Vercel from `dist/public`; there is no server.
 Everything the page says about the practice — name, registration, service area, services,
 prices, WhatsApp number — is in `client/src/content/practice.ts`. The page, the WebMCP tools
 and the schema.org JSON-LD block all read from it. Change a fact there, not in a component.
+
+The registration (`MAHPC(PT)06056`) is stated by the practitioner and not verified by LV, so
+every surface names it "as stated by the practitioner" (`PRACTITIONER_LINE`) and none says
+"licensed". A source guard test fails the build's test run if the word comes back.
 
 ## Booking
 
@@ -82,6 +86,14 @@ npm test         # vitest: tool safety, booking allowlist, CSP, source guard
 npm run check    # typecheck
 npm run build    # writes dist/public, with the CSP meta tag and JSON-LD
 ```
+
+## Fonts and CSP
+
+Manrope and Montserrat are self-hosted from `client/public/fonts/` (variable woff2, latin and
+latin-ext subsets, SIL Open Font License, taken from Google Fonts). The page's CSP allows
+styles and fonts from `'self'` only. The logo is still loaded from LV's storage
+(`PRACTICE.logoUrl`), so `img-src` allows that one origin; copy the logo into
+`client/public/` and point `logoUrl` at it to close that last third-party request.
 
 `vercel.json` sends the headers a meta tag cannot carry: `frame-ancestors`,
 `X-Frame-Options`, `Permissions-Policy`, `X-Content-Type-Options` and `Referrer-Policy`.

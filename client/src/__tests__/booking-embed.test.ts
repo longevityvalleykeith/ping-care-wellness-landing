@@ -35,6 +35,14 @@ describe("resolveBookingEmbed", () => {
 });
 
 describe("contentSecurityPolicy", () => {
+  // GRADE-R2 P3: fonts and styles are self-hosted.
+  it("allows no third-party style or font origin", () => {
+    const csp = contentSecurityPolicy({ kind: "off" });
+    expect(csp).toContain("style-src 'self' 'unsafe-inline';");
+    expect(csp).toContain("font-src 'self';");
+    expect(csp).not.toMatch(/googleapis|gstatic/);
+  });
+
   it("allows no frames while booking is off", () => {
     expect(contentSecurityPolicy({ kind: "off" })).toContain("frame-src 'none'");
   });

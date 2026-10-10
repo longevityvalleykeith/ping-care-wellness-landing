@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { llmsTxt, noscriptSummary, practiceJsonLd, robotsTxt, sitemapXml } from "@/content/head";
 import { PRACTICE, SERVICES } from "@/content/practice";
 import { PARTNER_OFFER_TERMS, resolvePartnerOffer } from "@/content/partner-offer";
+import { areaPages } from "@/content/areas";
 
 // The machine-readable surface (crawlers, answer engines, agents without
 // JavaScript) must carry the practice facts and nothing the page does not state.
@@ -85,3 +86,11 @@ describe("payment and partner offer on the machine surface", () => {
   });
 });
 
+// GRADE-R2 P3: the registration is as stated by the practitioner, never "licensed".
+describe("credential hedge on every machine surface", () => {
+  const areas = areaPages(["Petaling Jaya"]).map((p) => p.html).join("\n");
+  it.each(Object.entries({ ...surfaces, areas }))("%s says 'as stated by the practitioner' and never 'licensed'", (_name, text) => {
+    expect(text).not.toMatch(/licen[cs]ed/i);
+    if (_name !== "jsonld") expect(text).toContain("as stated by the practitioner");
+  });
+});
