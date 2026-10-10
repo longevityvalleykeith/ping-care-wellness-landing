@@ -90,7 +90,10 @@ npm run build    # writes dist/public, with the CSP meta tag and JSON-LD
 ## Fonts and CSP
 
 Manrope and Montserrat are self-hosted from `client/public/fonts/` (variable woff2, latin and
-latin-ext subsets, SIL Open Font License, taken from Google Fonts). The page's CSP allows
+latin-ext subsets, SIL Open Font License, taken from Google Fonts). The licence text ships beside
+them as `client/public/fonts/OFL.txt` (served at `/fonts/OFL.txt`), with each family's copyright
+line; a test fails if it goes missing. It is the only place the word "licensed" appears in the
+build, and it is about the fonts, not the practitioner. The page's CSP allows
 styles and fonts from `'self'` only. The logo is still loaded from LV's storage
 (`PRACTICE.logoUrl`), so `img-src` allows that one origin; copy the logo into
 `client/public/` and point `logoUrl` at it to close that last third-party request.

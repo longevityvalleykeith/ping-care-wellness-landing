@@ -48,3 +48,22 @@ describe("shipped source", () => {
     expect(html).not.toMatch(/maximum-scale|user-scalable=no/);
   });
 });
+
+// GRADE-R3 P3: the self-hosted fonts ship with their licence text beside them.
+describe("self-hosted fonts", () => {
+  const fontsDir = join(repo, "client/public/fonts");
+  const woff2 = readdirSync(fontsDir).filter((f) => f.endsWith(".woff2"));
+
+  it("are only Manrope and Montserrat", () => {
+    expect(woff2.length).toBeGreaterThan(0);
+    expect(woff2.filter((f) => !/^(manrope|montserrat)-/.test(f))).toEqual([]);
+  });
+
+  it("ship the SIL Open Font License text, with each family's copyright line, next to the woff2 files", () => {
+    const ofl = readFileSync(join(fontsDir, "OFL.txt"), "utf8");
+    expect(ofl).toMatch(/SIL Open Font License, Version 1\.1/);
+    expect(ofl).toMatch(/Copyright .* The Manrope Project Authors/);
+    expect(ofl).toMatch(/Copyright .* The Montserrat\.Git Project Authors/);
+    expect(ofl).toMatch(/PERMISSION & CONDITIONS/);
+  });
+});
