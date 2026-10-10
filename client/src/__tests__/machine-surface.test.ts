@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { llmsTxt, noscriptSummary, practiceJsonLd, robotsTxt, sitemapXml } from "@/content/head";
-import { PRACTICE, SERVICES } from "@/content/practice";
+import { CONTACT, PRACTICE, SERVICES } from "@/content/practice";
 import { PARTNER_OFFER_TERMS, resolvePartnerOffer } from "@/content/partner-offer";
 import { areaPages } from "@/content/areas";
 
@@ -92,5 +92,26 @@ describe("credential hedge on every machine surface", () => {
   it.each(Object.entries({ ...surfaces, areas }))("%s says 'as stated by the practitioner' and never 'licensed'", (_name, text) => {
     expect(text).not.toMatch(/licen[cs]ed/i);
     if (_name !== "jsonld") expect(text).toContain("as stated by the practitioner");
+  });
+});
+
+// GRADE-R4 P3: a reader without JavaScript gets the 999 line too, offer on or off.
+describe("emergency line in the no-JavaScript summary", () => {
+  const live = resolvePartnerOffer(
+    {
+      url: "https://app.longevityvalley.ai/offers/pc-50",
+      id: "pc-50",
+      expires: "2026-12-31",
+      checkout: "https://app.longevityvalley.ai/book/ping-care/first-visit",
+    },
+    new Date("2026-10-10T00:00:00Z"),
+  );
+
+  it.each([
+    ["offer off", noscriptSummary()],
+    ["offer on", noscriptSummary(live)],
+  ])("%s: says to call 999 (Malaysia) first", (_mode, html) => {
+    expect(CONTACT.emergency).toBe("In a medical emergency, call 999 (Malaysia) first.");
+    expect(html).toContain(`<p>${CONTACT.emergency}</p>`);
   });
 });
