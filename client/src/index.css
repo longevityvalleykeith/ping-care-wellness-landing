@@ -3,6 +3,42 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Self-hosted variable fonts (SIL Open Font License; files from Google Fonts,
+   latin and latin-ext subsets only). No third-party font or style origin is
+   contacted, so the CSP allows fonts from 'self' only. */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/manrope-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/manrope-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/montserrat-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/montserrat-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -48,8 +84,8 @@
   --primary: oklch(0.30 0.04 160);
   --primary-foreground: oklch(0.98 0.01 90);
 
-  /* Accent: Warm Terracotta (#C4704B) — nurturing, warm, caring */
-  --accent: oklch(0.58 0.12 45);
+  /* Accent: Warm Terracotta, darkened to keep text and buttons at WCAG AA (>= 4.5:1) */
+  --accent: oklch(0.5 0.12 45);
   --accent-foreground: oklch(0.98 0.01 45);
 
   /* Secondary: Soft Gold (#D4A574) — premium, gentle warmth */
@@ -136,10 +172,10 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     font-weight: 700;
   }
   button:not(:disabled),
@@ -196,4 +232,8 @@
       max-width: 1280px; /* Standard content width */
     }
   }
+}
+/* Anchor targets clear the fixed navigation bar. */
+section[id] {
+  scroll-margin-top: 5rem;
 }
