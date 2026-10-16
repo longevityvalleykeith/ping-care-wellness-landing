@@ -116,7 +116,7 @@ describe("resolvePrivacyNotice", () => {
 
   it("keeps the allow-list in one constant: LV's pages plus Ping Care's Calendesk site", () => {
     expect(Array.from(PRIVACY_NOTICE_HOSTS).sort()).toEqual(
-      ["7dgf0msykg.calendesk.net", "api.longevityvalley.ai", "app.longevityvalley.ai"],
+      ["7dgf0msykg.calendesk.net", "app.longevityvalley.ai"],
     );
   });
 

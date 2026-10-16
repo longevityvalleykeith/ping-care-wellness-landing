@@ -3,13 +3,12 @@
 // on a page a person reads, never on an LV API or tool endpoint.
 // This module reads no environment itself, so the build config can use it too.
 
-// LV's verified receipt path (Keith, 2026-10-10). Exact hostnames only: the
-// WHATWG parser lower-cases the host and strips a default port, so look-alikes,
-// a trailing dot or "www." never match.
-export const LV_PAGE_HOSTS: ReadonlySet<string> = new Set([
-  "app.longevityvalley.ai",
-  "api.longevityvalley.ai",
-]);
+// LV's verified receipt path. Keith ruled the hosts on 2026-10-16: app. only for
+// now. api.longevityvalley.ai is not bound to any LV deployment and stays for
+// machine readbacks; book.longevityvalley.ai is added once it is bound and read
+// back. Exact hostnames only: the WHATWG parser lower-cases the host and strips
+// a default port, so look-alikes, a trailing dot or "www." never match.
+export const LV_PAGE_HOSTS: ReadonlySet<string> = new Set(["app.longevityvalley.ai"]);
 
 export type LvPageUrl = { ok: true; url: string } | { ok: false; reason: string };
 
