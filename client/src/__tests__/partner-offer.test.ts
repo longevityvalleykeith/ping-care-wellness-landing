@@ -23,7 +23,8 @@ describe("resolvePartnerOffer", () => {
     [{ ...good, url: "https://book.longevityvalley.ai/offers/pc-50" }, "claim page must be on LV's verified receipt path"],
     [{ ...good, url: "https://app.longevityvalley.ai.evil.example/offers/pc-50" }, "claim page must be on LV's verified receipt path"],
     [{ ...good, url: "https://app.longevityvalley.ai/api/gateway/webmcp.js" }, "claim page cannot be an LV tool endpoint"],
-    [{ ...good, url: "https://api.longevityvalley.ai/api/mcp" }, "claim page cannot be an LV tool endpoint"],
+    [{ ...good, url: "https://api.longevityvalley.ai/api/mcp" }, "claim page must be on LV's verified receipt path"],
+    [{ ...good, url: "https://api.longevityvalley.ai/offers/pc-50" }, "claim page must be on LV's verified receipt path"],
     [{ ...good, url: "https://app.longevityvalley.ai/offers/pc-50?phone=0123" }, "claim page must carry no query or fragment"],
     [{ ...good, url: "https://app.longevityvalley.ai:8443/offers/pc-50" }, "claim page must carry no port or credentials"],
     [{ ...good, id: "" }, "offer id missing"],
@@ -104,7 +105,8 @@ describe("resolvePartnerOffer", () => {
     expect(resolvePartnerOffer({ ...good, checkout }, TODAY)).toEqual({ kind: "refused", reason });
   });
 
-  it.each(["app", "api"])("is live on %s.longevityvalley.ai with a clean claim link, the checkout, the id and the expiry", (sub) => {
+  // Keith, 2026-10-16: app. only until api./book. are bound and read back.
+  it.each(["app"])("is live on %s.longevityvalley.ai with a clean claim link, the checkout, the id and the expiry", (sub) => {
     expect(resolvePartnerOffer({ ...good, url: `https://${sub}.longevityvalley.ai/offers/pc-50` }, TODAY)).toEqual({
       kind: "live",
       claimUrl: `https://${sub}.longevityvalley.ai/offers/pc-50`,

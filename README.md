@@ -30,8 +30,8 @@ charges go through LV's transactional record first). The copy says
 
 A live booking form needs `VITE_PC_PRIVACY_NOTICE_URL` (the build fails without it). The
 notice must be https on one of the hosts in `PRIVACY_NOTICE_HOSTS`
-(`client/src/content/booking-embed.ts`): LV's pages (`app.longevityvalley.ai`,
-`api.longevityvalley.ai`, never an `/api` path) or Ping Care's own Calendesk site
+(`client/src/content/booking-embed.ts`): LV's pages (`app.longevityvalley.ai`, never an
+`/api` path) or Ping Care's own Calendesk site
 (`7dgf0msykg.calendesk.net`). Add Ping Care's own domain to that one constant when she has
 one. A notice that is set is checked even while the embed is off.
 
@@ -53,8 +53,9 @@ The card and the `get_partner_offer` tool appear only when all four are set at b
 | `VITE_PC_PARTNER_OFFER_ID` | the offer id |
 | `VITE_PC_PARTNER_OFFER_EXPIRES` | `YYYY-MM-DD`: a real calendar date, not past, at most 366 days after the build |
 
-Both URLs must be https on `app.longevityvalley.ai` or `api.longevityvalley.ai` (the one
-constant `LV_PAGE_HOSTS` in `client/src/content/lv-page-url.ts`), with no query, fragment,
+Both URLs must be https on `app.longevityvalley.ai` (the one constant `LV_PAGE_HOSTS` in
+`client/src/content/lv-page-url.ts`; Keith ruled app. only on 2026-10-16, with
+`book.longevityvalley.ai` to be added once it is bound and read back), with no query, fragment,
 port or credentials, and a plain page path that is not an LV tool endpoint: the path is
 percent-decoded, lower-cased and has repeated slashes collapsed before the check, so
 `/API`, `/%61pi` and `//api` are refused like `/api`. Setting the claim page without the
