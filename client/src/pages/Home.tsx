@@ -14,6 +14,7 @@ import {
   whatsappLink,
 } from "@/content/practice";
 import { registerWebMcpTools } from "@/webmcp/register";
+import { Link } from "wouter";
 import {
   ArrowRight,
   CalendarCheck,
@@ -654,7 +655,13 @@ export default function Home() {
           </div>
           <p className="pt-8 mt-8 border-t border-primary/10 text-center text-primary/80 text-sm">
             &copy; {new Date().getFullYear()} {PRACTICE.name}. All rights
-            reserved. {PRACTICE.registration}
+            reserved. {PRACTICE.registration}{" · "}
+            <Link
+              href="/privacy"
+              className="inline-block py-2 underline hover:no-underline"
+            >
+              Privacy policy
+            </Link>
           </p>
         </div>
       </footer>
