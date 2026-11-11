@@ -7,6 +7,12 @@
   "regions": [
     "sin1"
   ],
+  "rewrites": [
+    {
+      "source": "/privacy",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
